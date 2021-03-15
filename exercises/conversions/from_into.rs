@@ -36,17 +36,17 @@ impl Default for Person {
 impl From<&str> for Person {
     fn from(s: &str) -> Self {
         let mut values = s.split(',');
-        if let Some(name) = values.next() {
-            if !name.is_empty() {
-                if let Some(age_string) = values.next() {
-                    if let Ok(age) = age_string.parse() {
-                        return Self {
-                            name: name.to_string(),
-                            age,
-                        };
-                    }
+
+        match (values.next(), values.next()) {
+            (Some(name), Some(age_string)) if !name.is_empty() => {
+                if let Ok(age) = age_string.parse() {
+                    return Self {
+                        name: name.to_string(),
+                        age,
+                    };
                 }
             }
+            _ => {}
         }
         Self::default()
     }
